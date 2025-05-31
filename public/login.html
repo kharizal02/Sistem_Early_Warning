@@ -5,28 +5,71 @@
     <title>Login - Sistem Early Warning Banjir</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #d03ccb 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(94, 113, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(141, 216, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(187, 251, 255, 0.1) 0%, transparent 70%);
+            animation: floating 20s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
         }
 
         .login-container {
-            background-color: white;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 40px rgba(84, 9, 218, 0.1),
+                0 8px 24px rgba(78, 113, 255, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .login-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 25px 50px rgba(84, 9, 218, 0.15),
+                0 12px 30px rgba(78, 113, 255, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
         }
 
         .login-container h2 {
             text-align: center;
-            color: #333;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #5409DA 0%, #4E71FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .login-container form {
@@ -35,56 +78,123 @@
         }
 
         label {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
-            color: #555;
+            color: #5409DA;
+            font-size: 14px;
+            letter-spacing: 0.3px;
         }
 
         input[type="text"],
         input[type="password"] {
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            margin-bottom: 15px;
-            transition: border-color 0.3s ease;
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 2px solid rgba(141, 216, 255, 0.3);
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(187, 251, 255, 0.1);
+            color: #333;
+            font-weight: 500;
         }
 
         input[type="text"]:focus,
         input[type="password"]:focus {
-            border-color: #4285F4;
+            border-color: #4E71FF;
             outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 
+                0 0 0 4px rgba(78, 113, 255, 0.1),
+                0 4px 12px rgba(78, 113, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: rgba(84, 9, 218, 0.5);
+            font-weight: 400;
         }
 
         button {
-            background-color: #4285F4;
+            background: linear-gradient(135deg, #5409DA 0%, #4E71FF 100%);
             color: white;
-            padding: 10px;
+            padding: 16px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 16px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
         }
 
         button:hover {
-            background-color: #3367D6;
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 24px rgba(84, 9, 218, 0.3),
+                0 6px 12px rgba(78, 113, 255, 0.2);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0px);
         }
 
         .footer {
             text-align: center;
-            margin-top: 15px;
-            font-size: 12px;
-            color: #888;
+            margin-top: 25px;
+            font-size: 13px;
+            color: rgba(84, 9, 218, 0.7);
+            font-weight: 500;
         }
 
         .logo {
             text-align: center;
-            font-size: 40px;
-            margin-bottom: 10px;
+            font-size: 48px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(78, 113, 255, 0.3));
+            animation: pulse 3s ease-in-out infinite;
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 25px;
+                border-radius: 20px;
+            }
+            
+            .login-container h2 {
+                font-size: 24px;
+            }
+            
+            .logo {
+                font-size: 40px;
+            }
+        }
     </style>
 </head>
 <body>

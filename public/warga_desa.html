@@ -6,38 +6,72 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #d03ccb 100%);
+            min-height: 100vh;
         }
         .header {
             text-align: center;
             margin-bottom: 30px;
+            background: linear-gradient(135deg, #51a8d6 0%, #3074d3 50%, #d346a7 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
+
+        .header h1 {
+            color: #fff;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 10px 0 0 0;
+            font-size: 1.1em;
+        }
+            
         .status-overview {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            gap: 20px;
             margin-bottom: 30px;
         }
+
         .info-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, rgba(226, 79, 239, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+        
         .info-card h4 {
-            margin: 0 0 10px 0;
-            color: #666;
+            margin: 0 0 15px 0;
+            color: #555;
             font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
         .info-card .value {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
             color: #333;
+            margin-bottom: 8px;
         }
+        
         .chart-container {
             height: 400px;
             margin-bottom: 30px;
@@ -45,6 +79,11 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             padding: 20px;
+        }
+        .chart-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
         }
         
         .rain-indicator {
@@ -72,10 +111,46 @@
             background-color: #9E9E9E;
         }
         
-        .desa1-status { border-left: 4px solid #4285F4; }
-        .desa2-status { border-left: 4px solid #EA4335; }
+        .desa1-status { 
+            border-left: 4px solid #4285F4;
+        }
+        .desa2-status { 
+            border-left: 4px solid #EA4335;
+        }
+        
+        /* Tooltip styles */
+        [title] {
+            position: relative;
+            cursor: help;
+        }
+        [title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 1024px) {
+            .status-overview {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
         
         @media (max-width: 768px) {
+            .status-overview {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
             .status-overview {
                 grid-template-columns: 1fr;
             }
@@ -83,6 +158,7 @@
     </style>
 </head>
 <body>
+    <!-- Konten HTML tetap sama -->
     <div class="header">
         <h1>🌊 Sistem Early Warning Banjir</h1>
         <p>Informasi untuk Warga Desa</p>
@@ -104,10 +180,11 @@
     </div>
 
     <div class="chart-container">
-        <h3 style="text-align: center; margin-bottom: 20px;">📊 Grafik Gabungan Ketinggian Air</h3>
+        <h3>📊 Grafik Gabungan Ketinggian Air</h3>
         <canvas id="combinedChart"></canvas>
     </div>
 
+    <!-- Script tetap sama -->
     <script>
         // Configuration
         const maxDataPoints = 10; // 10 minutes at 10-second intervals
@@ -121,7 +198,7 @@
         };
         let chartLabels = [];
 
-        // Chart configuration
+        // Chart configuration - Diperbarui sesuai dengan pemerintahan.html
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
@@ -138,12 +215,18 @@
                     title: {
                         display: true,
                         text: 'Ketinggian Air (cm)'
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
                     }
                 },
                 x: {
                     title: {
                         display: true,
                         text: 'Waktu'
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.1)'
                     }
                 }
             },
@@ -156,10 +239,14 @@
                         label: (context) => `${context.dataset.label}: ${context.parsed.y.toFixed(1)} cm`
                     }
                 }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
             }
         };
 
-        // Initialize Combined Chart
+        // Initialize Combined Chart - Diperbarui sesuai dengan pemerintahan.html
         const combinedCtx = document.getElementById('combinedChart').getContext('2d');
         const combinedChart = new Chart(combinedCtx, {
             type: 'line',
@@ -172,8 +259,9 @@
                         borderColor: '#4285F4',
                         backgroundColor: 'rgba(66, 133, 244, 0.1)',
                         tension: 0.4,
-                        fill: true,
-                        pointRadius: 2
+                        fill: false,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
                     },
                     {
                         label: 'Desa 2',
@@ -181,14 +269,16 @@
                         borderColor: '#EA4335',
                         backgroundColor: 'rgba(234, 67, 53, 0.1)',
                         tension: 0.4,
-                        fill: true,
-                        pointRadius: 2
+                        fill: false,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
                     }
                 ]
             },
             options: chartOptions
         });
 
+        // Fungsi-fungsi lainnya tetap sama
         function formatRainStatus(status) {
             const normalizedStatus = normalizeRainStatus(status);
             
