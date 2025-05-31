@@ -94,18 +94,6 @@ async function sendFloodAlert(desa, waterLevel, sensorDistance, rainStatus) {
   const now = new Date();
   const desaName = desa === 'desa1' ? 'Desa 1' : 'Desa 2';
   
-  // Format waktu dengan opsi lengkap
-  const formattedTime = now.toLocaleString('id-ID', {
-    timeZone: 'Asia/Jakarta',
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  });
-
   // Update status alert
   emailAlertStatus[desa].lastAlertSent = now;
   emailAlertStatus[desa].alertActive = true;
@@ -127,7 +115,7 @@ async function sendFloodAlert(desa, waterLevel, sensorDistance, rainStatus) {
           
           <div style="background-color: white; padding: 15px; margin: 10px 0; border-left: 4px solid #dc2626;">
             <h3>📍 Lokasi: ${desaName}</h3>
-            <p><strong>🕐 Waktu:</strong> ${formattedTime}</p>
+            <p><strong>🕐 Waktu:</strong> ${now.toLocaleString('id-ID')}</p>
             <p><strong>💧 Ketinggian Air:</strong> ${waterLevel.toFixed(1)} cm (MELUAP!)</p>
             <p><strong>📱 Jarak Sensor:</strong> ${sensorDistance} cm</p>
             <p><strong>🌧️ Status Hujan:</strong> ${rainStatus === 'heavy' ? 'HUJAN LEBAT' : 'HUJAN'}</p>
@@ -176,17 +164,6 @@ async function sendSafeStatusEmail(desa) {
   const now = new Date();
   const desaName = desa === 'desa1' ? 'Desa 1' : 'Desa 2';
 
-  const formattedTime = now.toLocaleString('id-ID', {
-    timeZone: 'Asia/Jakarta',
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit'
-  });
-
   const mailOptions = {
     from: emailConfig.user,
     to: emailConfig.recipient,
@@ -202,7 +179,7 @@ async function sendSafeStatusEmail(desa) {
           
           <div style="background-color: white; padding: 15px; margin: 10px 0; border-left: 4px solid #16a34a;">
             <h3>📍 Lokasi: ${desaName}</h3>
-            <p><strong>🕐 Waktu:</strong> ${formattedTime}</p>
+            <p><strong>🕐 Waktu:</strong> ${now.toLocaleString('id-ID')}</p>
             <p><strong>📊 Status:</strong> Kondisi air dan cuaca kembali normal</p>
           </div>
 
@@ -228,17 +205,17 @@ async function sendSafeStatusEmail(desa) {
 // Fungsi untuk memeriksa kondisi bahaya dan mengirim alert
 function checkAndSendAlert(desa, sensorDistance, rainStatus) {
   const now = new Date();
-  const waterLevel = convertSensorToWaterLevel(sensorDistance);
   const isWaterOverflowing = sensorDistance < DANGER_THRESHOLD;
   const isHeavyRain = rainStatus === 'heavy';
   const isDangerCondition = isWaterOverflowing && isHeavyRain;
   
   const alertStatus = emailAlertStatus[desa];
 
-  // Periksa apakah cooldown sudah selesai
-  if (alertStatus.cooldownActive && alertStatus.cooldownEndTime <= now) {
+  // Reset cooldown jika status sudah aman
+  if (!isDangerCondition && alertStatus.cooldownActive) {
     alertStatus.cooldownActive = false;
     alertStatus.cooldownEndTime = null;
+    console.log(`🔄 Cooldown untuk ${desa} direset karena kondisi aman.`);
   }
 
   if (isDangerCondition) {
@@ -247,28 +224,19 @@ function checkAndSendAlert(desa, sensorDistance, rainStatus) {
       alertStatus.dangerCondition = true;
       alertStatus.dangerStartTime = now;
       console.log(`🚨 KONDISI BAHAYA BARU terdeteksi di ${desa.toUpperCase()}!`);
-    } else {
-      // Jika kondisi bahaya masih berlangsung
-      const dangerDuration = now - alertStatus.dangerStartTime;
       
-      // Kirim email jika:
-      // 1. Belum ada email yang dikirim
-      // 2. Sudah melewati durasi minimal bahaya
-      // 3. Tidak dalam cooldown period
-      if (!alertStatus.alertActive && 
-          dangerDuration >= MIN_DANGER_DURATION && 
-          !alertStatus.cooldownActive) {
-        sendFloodAlert(desa, waterLevel, sensorDistance, rainStatus);
+      // Langsung kirim email (tanpa tunggu durasi minimal)
+      if (!alertStatus.alertActive && !alertStatus.cooldownActive) {
+        sendFloodAlert(desa, convertSensorToWaterLevel(sensorDistance), sensorDistance, rainStatus);
       }
     }
   } else {
-    // Jika kondisi kembali normal setelah bahaya
+    // Jika kondisi kembali aman setelah bahaya
     if (alertStatus.dangerCondition) {
       alertStatus.dangerCondition = false;
       alertStatus.dangerStartTime = null;
-      console.log(`✅ Kondisi ${desa.toUpperCase()} kembali aman`);
       
-      // Kirim email status aman jika sebelumnya ada alert
+      // Kirim email aman jika sebelumnya ada alert
       if (alertStatus.alertActive) {
         sendSafeStatusEmail(desa);
       }
