@@ -2,74 +2,38 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistem Early Warning Banjir</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: linear-gradient(135deg, #667eea 0%, #d03ccb 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #d03ccb 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(94, 113, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(141, 216, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(187, 251, 255, 0.1) 0%, transparent 70%);
-            animation: floating 20s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
+            padding: 15px;
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 
-                0 20px 40px rgba(84, 9, 218, 0.1),
-                0 8px 24px rgba(78, 113, 255, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            background-color: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 420px;
-            position: relative;
-            z-index: 10;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .login-container:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 25px 50px rgba(84, 9, 218, 0.15),
-                0 12px 30px rgba(78, 113, 255, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            max-width: 400px;
+            min-width: 280px;
         }
 
         .login-container h2 {
             text-align: center;
-            background: linear-gradient(135deg, #5409DA 0%, #4E71FF 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
         }
 
         .login-container form {
@@ -78,123 +42,175 @@
         }
 
         label {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
-            color: #5409DA;
-            font-size: 14px;
-            letter-spacing: 0.3px;
+            color: #555;
+            font-size: 0.9rem;
         }
 
         input[type="text"],
         input[type="password"] {
-            padding: 16px 20px;
-            border-radius: 16px;
-            border: 2px solid rgba(141, 216, 255, 0.3);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
             font-size: 16px;
-            margin-bottom: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(187, 251, 255, 0.1);
-            color: #333;
-            font-weight: 500;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+            width: 100%;
         }
 
         input[type="text"]:focus,
         input[type="password"]:focus {
-            border-color: #4E71FF;
+            border-color: #4285F4;
             outline: none;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 
-                0 0 0 4px rgba(78, 113, 255, 0.1),
-                0 4px 12px rgba(78, 113, 255, 0.15);
-            transform: translateY(-1px);
-        }
-
-        input[type="text"]::placeholder,
-        input[type="password"]::placeholder {
-            color: rgba(84, 9, 218, 0.5);
-            font-weight: 400;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
         }
 
         button {
-            background: linear-gradient(135deg, #5409DA 0%, #4E71FF 100%);
+            background-color: #4285F4;
             color: white;
-            padding: 16px 24px;
+            padding: 12px;
             border: none;
-            border-radius: 16px;
+            border-radius: 8px;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-top: 10px;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+            transition: background-color 0.3s ease;
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
+            min-height: 44px;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 12px 24px rgba(84, 9, 218, 0.3),
-                0 6px 12px rgba(78, 113, 255, 0.2);
-        }
-
-        button:hover::before {
-            left: 100%;
+            background-color: #3367D6;
         }
 
         button:active {
-            transform: translateY(0px);
+            transform: translateY(1px);
         }
 
         .footer {
             text-align: center;
-            margin-top: 25px;
-            font-size: 13px;
-            color: rgba(84, 9, 218, 0.7);
-            font-weight: 500;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: #888;
         }
 
         .logo {
             text-align: center;
-            font-size: 48px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 8px rgba(78, 113, 255, 0.3));
-            animation: pulse 3s ease-in-out infinite;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
+        /* Media Queries untuk berbagai ukuran layar */
+        
+        /* Tablet kecil dan ponsel besar */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
             .login-container {
-                margin: 20px;
-                padding: 30px 25px;
-                border-radius: 20px;
+                padding: 25px 30px;
+                margin: 10px;
             }
             
             .login-container h2 {
-                font-size: 24px;
+                font-size: 1.4rem;
             }
             
             .logo {
-                font-size: 40px;
+                font-size: 2.2rem;
             }
         }
+
+        /* Ponsel */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .login-container {
+                padding: 20px 25px;
+                margin: 5px;
+                border-radius: 8px;
+            }
+            
+            .login-container h2 {
+                font-size: 1.3rem;
+                margin-bottom: 15px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+                margin-bottom: 8px;
+            }
+            
+            input[type="text"],
+            input[type="password"] {
+                padding: 14px 15px;
+                font-size: 16px; /* Mencegah zoom pada iOS */
+            }
+            
+            button {
+                padding: 14px 12px;
+                font-size: 16px;
+                min-height: 48px; /* Ukuran minimum untuk touch target */
+            }
+            
+            label {
+                font-size: 0.85rem;
+            }
+            
+            .footer {
+                font-size: 0.7rem;
+                margin-top: 12px;
+            }
+        }
+
+        /* Ponsel kecil */
+        @media screen and (max-width: 320px) {
+            .login-container {
+                padding: 15px 20px;
+            }
+            
+            .login-container h2 {
+                font-size: 1.2rem;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Landscape mode untuk ponsel */
+        @media screen and (max-height: 600px) and (orientation: landscape) {
+            body {
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+            
+            .login-container {
+                margin: 20px auto;
+            }
+            
+            .logo {
+                font-size: 2rem;
+                margin-bottom: 5px;
+            }
+            
+            .login-container h2 {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            input[type="text"],
+            input[type="password"] {
+                border-width: 0.5px;
+            }
+        }
+
     </style>
 </head>
 <body>

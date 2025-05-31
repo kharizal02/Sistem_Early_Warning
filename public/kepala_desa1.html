@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Monitoring Ketinggian Air - Desa 1</title>
+    <title>Monitoring Debit Air - Desa 1</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
@@ -221,7 +221,7 @@
     
     <div class="status-overview">
         <div class="info-card desa1-data">
-            <h4>Ketinggian Air</h4>
+            <h4>Debit Air</h4>
             <div class="value" id="desa1Value">-- cm</div>
             <div class="sub-value" id="desa1SensorValue">Sensor: -- cm</div>
         </div>
@@ -256,7 +256,7 @@
                 <thead>
                     <tr>
                         <th>Waktu</th>
-                        <th>Ketinggian Air</th>
+                        <th>Debit Air</th>
                         <th>Jarak Sensor</th>
                         <th>Status Hujan</th>
                     </tr>
@@ -296,7 +296,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Ketinggian Air (cm)'
+                        text: 'Debit Air (cm)'
                     },
                     grid: {
                         color: 'rgba(0,0,0,0.1)'
@@ -348,7 +348,7 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Ketinggian Air Desa 1',
+                    label: 'Debit Air Desa 1',
                     data: [],
                     borderColor: '#4285F4',
                     backgroundColor: 'rgba(66, 133, 244, 0.1)',
@@ -533,7 +533,7 @@
         function showAlertNotification() {
             if (Notification.permission === "granted") {
                 new Notification("Peringatan Banjir!", {
-                    body: `Ketinggian air mencapai ${document.getElementById('desa1Value').textContent} - Status: MELUAP!`,
+                    body: `Debit air mencapai ${document.getElementById('desa1Value').textContent} - Status: MELUAP!`,
                     icon: "/warning-icon.png"
                 });
             } else if (Notification.permission !== "denied") {
