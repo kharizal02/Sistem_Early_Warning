@@ -8,7 +8,7 @@ const char* password = "HARUSGEDE";
 const char* mqtt_server = "maqiatto.com";
 const int mqtt_port = 1883;
 const char* mqtt_user = "mohamadkharizalfirdaus@gmail.com";
-const char* mqtt_pass = "Rizal020305+";
+const char* mqtt_pass = "*********";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
